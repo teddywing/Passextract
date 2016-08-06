@@ -6,6 +6,8 @@ use clipboard::ClipboardContext;
 use rustty::{Terminal, Event, Cell, Color, Attr};
 use rustty::ui::Painter;
 
+use std::io::{self, BufRead};
+use std::process;
 use std::time::Duration;
 
 struct Point {
@@ -19,6 +21,22 @@ fn strip_key(line: &str) -> &str {
 }
 
 fn main() {
+    let mut options = Vec::new();
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        let line = line.expect("Error reading from STDIN");
+
+        if line.starts_with("e: ") ||
+            line.starts_with("u: ") ||
+            line.starts_with("p: ") {
+            options.push(line);
+        }
+    }
+
+    if options.is_empty() {
+        process::exit(1);
+    }
+
     let mut term = Terminal::new().unwrap();
     term.swap_buffers().unwrap();
 
@@ -35,12 +53,6 @@ fn main() {
 
         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
         term.printline(5, 2, "test");
-
-        let options = vec![
-            "e: booya@kacha.ch",
-            "u: booyakacha",
-            "p: secret"
-        ];
 
         for (i, s) in options.iter().enumerate() {
             term.printline(5, i + 3, s)
@@ -75,7 +87,7 @@ fn main() {
                     }
                 }
                 '\x0D' => {
-                    match clipboard_ctx.set_contents(strip_key(options[selection.y - 3]).to_owned()) {
+                    match clipboard_ctx.set_contents(strip_key(&options[selection.y - 3]).to_owned()) {
                         Ok(_) => {
                             term.printline_with_cell(selection.x, selection.y, "->", green_cell);
                         },
