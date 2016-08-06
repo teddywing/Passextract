@@ -15,6 +15,14 @@ struct Point {
     y: usize,
 }
 
+/// Strips the part of a line before and including the first colon.
+///
+/// # Examples
+///
+/// ```
+/// let value = strip_key("e: email@example.com");
+/// assert_eq!(value, "email@example.com");
+/// ```
 fn strip_key(line: &str) -> &str {
     let strings: Vec<&str> = line.split(": ").collect();
     strings[1]
