@@ -49,7 +49,7 @@ fn main() {
     let mut clipboard_ctx = ClipboardContext::new().unwrap();
 
     loop {
-        term.printline(0, 0, "Passextract (Press q or Ctrl-C to quit)");
+        term.printline_with_cell(0, 0, "Passextract (Press q or Ctrl-C to quit)", knockout_cell);
 
         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
 
