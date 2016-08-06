@@ -52,10 +52,9 @@ fn main() {
         term.printline(0, 0, "Passextract (Press q or Ctrl-C to quit)");
 
         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
-        term.printline(5, 2, "test");
 
         for (i, s) in options.iter().enumerate() {
-            term.printline(5, i + 3, s)
+            term.printline(5, i + 2, s)
         }
 
         let evt = term.get_event(Duration::from_millis(100)).unwrap();
@@ -65,7 +64,7 @@ fn main() {
                     break;
                 }
                 'j' => {
-                    if selection.y < options.len() + 2 {
+                    if selection.y < options.len() + 1 {
                         term.printline(selection.x, selection.y, "  ");
 
                         selection.y = selection.y + 1;
@@ -83,7 +82,7 @@ fn main() {
                     }
                 }
                 '\x0D' => {
-                    match clipboard_ctx.set_contents(strip_key(&options[selection.y - 3]).to_owned()) {
+                    match clipboard_ctx.set_contents(strip_key(&options[selection.y - 2]).to_owned()) {
                         Ok(_) => {
                             term.printline_with_cell(selection.x, selection.y, "->", green_cell);
                         },
