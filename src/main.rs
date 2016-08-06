@@ -6,8 +6,9 @@ use clipboard::ClipboardContext;
 use rustty::{Terminal, Event, Cell, Color, Attr};
 use rustty::ui::Painter;
 
+use std::env;
 use std::io::{self, BufRead};
-use std::process;
+use std::process::{self, Command};
 use std::time::Duration;
 
 struct Point {
@@ -37,18 +38,52 @@ fn move_selection(term: &mut Terminal, selection: &mut Point, style: Cell, amoun
     term.printline_with_cell(selection.x, selection.y, "->", style);
 }
 
-fn main() {
-    let mut options = Vec::new();
-    let stdin = io::stdin();
-    for line in stdin.lock().lines() {
-        let line = line.expect("Error reading from STDIN");
-
+/// Given a filename, either parse options from STDIN or send the file to
+/// `pass show` and parse the result as options.
+fn parse_options(filename: &str) -> Vec<String> {
+    fn push_option(options: &mut Vec<String>, line: String) {
         if line.starts_with("e: ") ||
             line.starts_with("u: ") ||
             line.starts_with("p: ") {
             options.push(line);
         }
     }
+
+    let mut options = Vec::new();
+
+    if filename == "-" {
+        let stdin = io::stdin();
+
+        for line in stdin.lock().lines() {
+            let line = line.expect("Error reading from STDIN");
+            push_option(&mut options, line.to_owned());
+        }
+    } else {
+        let file = Command::new("pass")
+            .arg("show")
+            .arg(filename)
+            .output()
+            .expect("Error executing `pass`")
+            .stdout;
+
+        for line in String::from_utf8_lossy(&file).lines() {
+            push_option(&mut options, line.to_owned());
+        }
+    }
+
+    options
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+
+    let input = if args.len() > 1 {
+        &args[1]
+    } else {
+        "-"
+    };
+
+    let options = parse_options(input);
 
     if options.is_empty() {
         process::exit(1);
