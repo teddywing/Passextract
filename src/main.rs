@@ -58,8 +58,6 @@ fn main() {
             term.printline(5, i + 3, s)
         }
 
-        term.set_cursor(selection.x + 2, selection.y).unwrap();
-
         let evt = term.get_event(Duration::from_millis(100)).unwrap();
         if let Some(Event::Key(ch)) = evt {
             match ch {
@@ -73,7 +71,6 @@ fn main() {
                         selection.y = selection.y + 1;
 
                         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
-                        term.set_cursor(selection.x + 2, selection.y).unwrap();
                     }
                 }
                 'k' => {
@@ -83,7 +80,6 @@ fn main() {
                         selection.y = selection.y - 1;
 
                         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
-                        term.set_cursor(selection.x + 2, selection.y).unwrap();
                     }
                 }
                 '\x0D' => {
