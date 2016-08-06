@@ -20,6 +20,15 @@ fn strip_key(line: &str) -> &str {
     strings[1]
 }
 
+fn move_selection(term: &mut Terminal, selection: &mut Point, style: Cell, amount: isize) {
+    term.printline(selection.x, selection.y, "  ");
+
+    let y = selection.y as isize;
+    selection.y = (y + amount) as usize;
+
+    term.printline_with_cell(selection.x, selection.y, "->", style);
+}
+
 fn main() {
     let mut options = Vec::new();
     let stdin = io::stdin();
@@ -65,20 +74,12 @@ fn main() {
                 }
                 'j' => {
                     if selection.y < options.len() + 1 {
-                        term.printline(selection.x, selection.y, "  ");
-
-                        selection.y = selection.y + 1;
-
-                        term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
+                        move_selection(&mut term, &mut selection, knockout_cell, 1)
                     }
                 }
                 'k' => {
                     if selection.y > 2 {
-                        term.printline(selection.x, selection.y, "  ");
-
-                        selection.y = selection.y - 1;
-
-                        term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
+                        move_selection(&mut term, &mut selection, knockout_cell, -1)
                     }
                 }
                 '\x0D' => {
