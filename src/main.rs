@@ -6,8 +6,9 @@ use clipboard::ClipboardContext;
 use rustty::{Terminal, Event, Cell, Color, Attr};
 use rustty::ui::Painter;
 
+use std::env;
 use std::io::{self, BufRead};
-use std::process;
+use std::process::{self, Command};
 use std::time::Duration;
 
 struct Point {
@@ -38,17 +39,42 @@ fn move_selection(term: &mut Terminal, selection: &mut Point, style: Cell, amoun
 }
 
 fn main() {
-    let mut options = Vec::new();
-    let stdin = io::stdin();
-    for line in stdin.lock().lines() {
-        let line = line.expect("Error reading from STDIN");
+    let args: Vec<String> = env::args().collect();
 
+    let input = if args.len() > 1 {
+        &args[1]
+    } else {
+        "-"
+    };
+
+    let file = Command::new("pass")
+        .arg("show")
+        .arg(input)
+        .output()
+        .expect("Error executing `pass`")
+        .stdout;
+
+    let output = String::from_utf8_lossy(&file);
+    let mut options = Vec::new();
+    for line in output.lines() {
         if line.starts_with("e: ") ||
             line.starts_with("u: ") ||
             line.starts_with("p: ") {
             options.push(line);
         }
     }
+
+    // let mut options = Vec::new();
+    // let stdin = io::stdin();
+    // for line in stdin.lock().lines() {
+    //     let line = line.expect("Error reading from STDIN");
+    //
+    //     if line.starts_with("e: ") ||
+    //         line.starts_with("u: ") ||
+    //         line.starts_with("p: ") {
+    //         options.push(line);
+    //     }
+    // }
 
     if options.is_empty() {
         process::exit(1);
