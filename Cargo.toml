@@ -3,4 +3,5 @@ name = "passextract"
 version = "0.0.1"
 
 [dependencies]
+clipboard = "0.1.2"
 rustty = "0.1"
