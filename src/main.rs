@@ -23,6 +23,8 @@ fn main() {
     term.swap_buffers().unwrap();
 
     let knockout_cell = Cell::with_style(Color::White, Color::Black, Attr::Default);
+    let red_cell = Cell::with_style(Color::White, Color::Red, Attr::Default);
+    let green_cell = Cell::with_style(Color::White, Color::Green, Attr::Default);
 
     let mut selection = Point { x: 0, y: 2 };
 
@@ -73,7 +75,14 @@ fn main() {
                     }
                 }
                 '\x0D' => {
-                    clipboard_ctx.set_contents(strip_key(options[selection.y - 3]).to_owned()).unwrap()
+                    match clipboard_ctx.set_contents(strip_key(options[selection.y - 3]).to_owned()) {
+                        Ok(_) => {
+                            term.printline_with_cell(selection.x, selection.y, "->", green_cell);
+                        },
+                        Err(_) => {
+                            term.printline_with_cell(selection.x, selection.y, "->", red_cell);
+                        }
+                    }
                 }
                 c @ _ => {
                 }
