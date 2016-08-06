@@ -3,4 +3,4 @@ name = "passextract"
 version = "0.0.1"
 
 [dependencies]
-termion = "1.0"
+rustty = "0.1"
