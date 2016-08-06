@@ -38,6 +38,40 @@ fn move_selection(term: &mut Terminal, selection: &mut Point, style: Cell, amoun
     term.printline_with_cell(selection.x, selection.y, "->", style);
 }
 
+fn parse_options(filename: &str) -> Vec<String> {
+    fn push_option(options: &mut Vec<String>, line: String) {
+        if line.starts_with("e: ") ||
+            line.starts_with("u: ") ||
+            line.starts_with("p: ") {
+            options.push(line);
+        }
+    }
+
+    let mut options = Vec::new();
+
+    if filename == "-" {
+        let stdin = io::stdin();
+
+        for line in stdin.lock().lines() {
+            let line = line.expect("Error reading from STDIN");
+            push_option(&mut options, line.to_owned());
+        }
+    } else {
+        let file = Command::new("pass")
+            .arg("show")
+            .arg(filename)
+            .output()
+            .expect("Error executing `pass`")
+            .stdout;
+
+        for line in String::from_utf8_lossy(&file).lines() {
+            push_option(&mut options, line.to_owned());
+        }
+    }
+
+    options
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -47,34 +81,7 @@ fn main() {
         "-"
     };
 
-    let file = Command::new("pass")
-        .arg("show")
-        .arg(input)
-        .output()
-        .expect("Error executing `pass`")
-        .stdout;
-
-    let output = String::from_utf8_lossy(&file);
-    let mut options = Vec::new();
-    for line in output.lines() {
-        if line.starts_with("e: ") ||
-            line.starts_with("u: ") ||
-            line.starts_with("p: ") {
-            options.push(line);
-        }
-    }
-
-    // let mut options = Vec::new();
-    // let stdin = io::stdin();
-    // for line in stdin.lock().lines() {
-    //     let line = line.expect("Error reading from STDIN");
-    //
-    //     if line.starts_with("e: ") ||
-    //         line.starts_with("u: ") ||
-    //         line.starts_with("p: ") {
-    //         options.push(line);
-    //     }
-    // }
+    let options = parse_options(input);
 
     if options.is_empty() {
         process::exit(1);
