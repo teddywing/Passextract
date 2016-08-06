@@ -21,6 +21,7 @@ In order to be recognised by Passextract, those fields must be prefixed by
 
 
 ## Demo
+![screencast](./screencast.gif)
 
 
 ## Usage
