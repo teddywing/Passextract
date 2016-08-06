@@ -38,6 +38,8 @@ fn move_selection(term: &mut Terminal, selection: &mut Point, style: Cell, amoun
     term.printline_with_cell(selection.x, selection.y, "->", style);
 }
 
+/// Given a filename, either parse options from STDIN or send the file to
+/// `pass show` and parse the result as options.
 fn parse_options(filename: &str) -> Vec<String> {
     fn push_option(options: &mut Vec<String>, line: String) {
         if line.starts_with("e: ") ||
