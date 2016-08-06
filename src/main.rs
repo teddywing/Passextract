@@ -5,11 +5,31 @@ use rustty::ui::Painter;
 
 use std::time::Duration;
 
+struct Selection<'a> {
+    x: usize,
+    y: usize,
+    terminal: &'a mut Terminal,
+}
+
+impl<'a> Selection<'a> {
+    fn move_selection(&mut self, amount: usize) {
+        // Clear old selection cursor
+        self.terminal.printline(self.x, self.y, "  ");
+
+        self.y = self.y + amount;
+
+        let knockout_cell = Cell::with_style(Color::Byte(0x07), Color::Black, Attr::Default);
+        self.terminal.printline_with_cell(0, 2, "->", knockout_cell);
+    }
+}
+
 fn main() {
     let mut term = Terminal::new().unwrap();
     term.swap_buffers().unwrap();
 
     let knockout_cell = Cell::with_style(Color::Byte(0x07), Color::Black, Attr::Default);
+
+    let selection = Selection { x: 2, y: 2, terminal: &mut term };
 
     loop {
         term.printline(0, 0, "Passextract (Press q or Ctrl-C to quit)");
@@ -34,6 +54,11 @@ fn main() {
             match ch {
                 'q' | '\x03' => {
                     break;
+                }
+                'j' => {
+                    
+                }
+                'k' => {
                 }
                 c @ _ => {
                 }
