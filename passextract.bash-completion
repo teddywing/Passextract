@@ -1,0 +1,8 @@
+_passextract() {
+	local cur=${COMP_WORDS[COMP_CWORD]}
+
+	COMPREPLY=( $( compgen -- ${cur} ) )
+	_pass_complete_entries 1
+}
+
+complete -o filenames -o nospace -F _passextract passextract
