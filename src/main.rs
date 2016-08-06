@@ -17,6 +17,16 @@ fn main() {
         term.printline_with_cell(0, 2, "->", knockout_cell);
         term.printline(5, 2, "test");
 
+        let options = vec![
+            "e: booya@kacha.ch",
+            "u: booyakacha",
+            "p: secret"
+        ];
+
+        for (i, s) in options.iter().enumerate() {
+            term.printline(5, i + 3, s)
+        }
+
         term.set_cursor(2, 2).unwrap();
 
         let evt = term.get_event(Duration::from_millis(100)).unwrap();
