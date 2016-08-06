@@ -5,22 +5,9 @@ use rustty::ui::Painter;
 
 use std::time::Duration;
 
-struct Selection<'a> {
+struct Point {
     x: usize,
     y: usize,
-    terminal: &'a mut Terminal,
-}
-
-impl<'a> Selection<'a> {
-    fn move_selection(&mut self, amount: usize) {
-        // Clear old selection cursor
-        self.terminal.printline(self.x, self.y, "  ");
-
-        self.y = self.y + amount;
-
-        let knockout_cell = Cell::with_style(Color::Byte(0x07), Color::Black, Attr::Default);
-        self.terminal.printline_with_cell(0, 2, "->", knockout_cell);
-    }
 }
 
 fn main() {
@@ -29,12 +16,12 @@ fn main() {
 
     let knockout_cell = Cell::with_style(Color::Byte(0x07), Color::Black, Attr::Default);
 
-    let selection = Selection { x: 2, y: 2, terminal: &mut term };
+    let mut selection = Point { x: 0, y: 2 };
 
     loop {
         term.printline(0, 0, "Passextract (Press q or Ctrl-C to quit)");
 
-        term.printline_with_cell(0, 2, "->", knockout_cell);
+        term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
         term.printline(5, 2, "test");
 
         let options = vec![
@@ -47,7 +34,7 @@ fn main() {
             term.printline(5, i + 3, s)
         }
 
-        term.set_cursor(2, 2).unwrap();
+        term.set_cursor(selection.x + 2, selection.y).unwrap();
 
         let evt = term.get_event(Duration::from_millis(100)).unwrap();
         if let Some(Event::Key(ch)) = evt {
@@ -56,9 +43,24 @@ fn main() {
                     break;
                 }
                 'j' => {
-                    
+                    if selection.y < options.len() + 2 {
+                        term.printline(selection.x, selection.y, "  ");
+
+                        selection.y = selection.y + 1;
+
+                        term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
+                        term.set_cursor(selection.x + 2, selection.y).unwrap();
+                    }
                 }
                 'k' => {
+                    if selection.y > 2 {
+                        term.printline(selection.x, selection.y, "  ");
+
+                        selection.y = selection.y - 1;
+
+                        term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
+                        term.set_cursor(selection.x + 2, selection.y).unwrap();
+                    }
                 }
                 c @ _ => {
                 }
