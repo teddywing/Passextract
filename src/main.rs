@@ -22,7 +22,7 @@ fn main() {
     let mut term = Terminal::new().unwrap();
     term.swap_buffers().unwrap();
 
-    let knockout_cell = Cell::with_style(Color::Byte(0x07), Color::Black, Attr::Default);
+    let knockout_cell = Cell::with_style(Color::White, Color::Black, Attr::Default);
 
     let mut selection = Point { x: 0, y: 2 };
 
