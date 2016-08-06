@@ -10,6 +10,11 @@ struct Point {
     y: usize,
 }
 
+fn strip_key(line: &str) -> &str {
+    let strings: Vec<&str> = line.split(": ").collect();
+    strings[1]
+}
+
 fn main() {
     let mut term = Terminal::new().unwrap();
     term.swap_buffers().unwrap();
