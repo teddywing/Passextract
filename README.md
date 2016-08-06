@@ -36,6 +36,13 @@ Passextract can be invoked on its own or with the piped output of `pass show`:
 The included Bash completion file provides the same tab completion options as
 `pass show`.
 
+In the interactive UI, the following commands are available:
+
+	q or Ctrl-C: Quit
+	          j: Move the selection down
+	          k: Move the selection up
+	      Enter: Copy the currently selected line
+
 
 ## Install
 A binary built for Mac OS X is available on the [releases][3] page. Download the
