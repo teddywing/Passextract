@@ -1,4 +1,7 @@
+extern crate clipboard;
 extern crate rustty;
+
+use clipboard::ClipboardContext;
 
 use rustty::{Terminal, Event, Cell, Color, Attr};
 use rustty::ui::Painter;
@@ -22,6 +25,8 @@ fn main() {
     let knockout_cell = Cell::with_style(Color::Byte(0x07), Color::Black, Attr::Default);
 
     let mut selection = Point { x: 0, y: 2 };
+
+    let mut clipboard_ctx = ClipboardContext::new().unwrap();
 
     loop {
         term.printline(0, 0, "Passextract (Press q or Ctrl-C to quit)");
@@ -66,6 +71,9 @@ fn main() {
                         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
                         term.set_cursor(selection.x + 2, selection.y).unwrap();
                     }
+                }
+                '\x0D' => {
+                    clipboard_ctx.set_contents(strip_key(options[selection.y - 3]).to_owned()).unwrap()
                 }
                 c @ _ => {
                 }
