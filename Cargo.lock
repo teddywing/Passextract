@@ -1,6 +1,6 @@
 [root]
 name = "passextract"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "clipboard 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustty 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)",
