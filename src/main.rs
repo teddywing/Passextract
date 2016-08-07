@@ -29,9 +29,9 @@ struct Point {
 /// let value = strip_key("e: email@example.com");
 /// assert_eq!(value, "email@example.com");
 /// ```
-fn strip_key(line: &str) -> &str {
+fn strip_key(line: &str) -> String {
     let strings: Vec<&str> = line.split(": ").collect();
-    strings[1]
+    strings[1..].join(": ")
 }
 
 fn move_selection(term: &mut Terminal, selection: &mut Point, style: Cell, amount: isize) {
