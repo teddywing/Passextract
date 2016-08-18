@@ -41,6 +41,8 @@ In the interactive UI, the following commands are available:
 	q or Ctrl-C: Quit
 	          j: Move the selection down
 	          k: Move the selection up
+	          g: Move the selection to the top
+	          G: Move the selection to the bottom
 	      Enter: Copy the currently selected line
 
 
