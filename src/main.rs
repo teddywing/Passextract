@@ -34,11 +34,10 @@ fn strip_key(line: &str) -> String {
     strings[1..].join(": ")
 }
 
-fn move_selection(term: &mut Terminal, selection: &mut Point, style: Cell, amount: isize) {
+fn move_selection(term: &mut Terminal, selection: &mut Point, style: Cell, y: usize) {
     term.printline(selection.x, selection.y, "  ");
 
-    let y = selection.y as isize;
-    selection.y = (y + amount) as usize;
+    selection.y = y;
 
     term.printline_with_cell(selection.x, selection.y, "->", style);
 }
@@ -122,13 +121,21 @@ fn main() {
                 }
                 'j' => {
                     if selection.y < options.len() + 1 {
-                        move_selection(&mut term, &mut selection, knockout_cell, 1)
+                        let y = selection.y;
+                        move_selection(&mut term, &mut selection, knockout_cell, y + 1)
                     }
                 }
                 'k' => {
                     if selection.y > 2 {
-                        move_selection(&mut term, &mut selection, knockout_cell, -1)
+                        let y = selection.y;
+                        move_selection(&mut term, &mut selection, knockout_cell, y - 1)
                     }
+                }
+                'g' => {
+                    move_selection(&mut term, &mut selection, knockout_cell, 2)
+                }
+                'G' => {
+                    move_selection(&mut term, &mut selection, knockout_cell, options.len() + 1)
                 }
                 '\x0D' => {
                     match clipboard_ctx.set_contents(strip_key(&options[selection.y - 2]).to_owned()) {
