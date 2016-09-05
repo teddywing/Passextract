@@ -157,8 +157,7 @@ fn main() {
                     move_selection(&mut term, &mut selection, knockout_cell, options.len() + 1)
                 }
                 '\x0D' => {
-                    clipboard_store.set_contents(strip_key(&options[selection.y - 2]).to_owned());
-                    match clipboard_ctx.set_contents(strip_key(&options[selection.y - 2]).to_owned()) {
+                    match clipboard_store.set_contents(strip_key(&options[selection.y - 2]).to_owned()) {
                         Ok(_) => {
                             term.printline_with_cell(selection.x, selection.y, "->", green_cell);
                         },

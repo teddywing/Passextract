@@ -21,14 +21,14 @@ impl ClipboardStore {
         )
     }
 
+    /// Set the contents of the system clipboard. Stores the original contents
+    /// of the clipboard the first time the function is run.
     pub fn set_contents(&mut self, data: String) -> Result<(), Box<Error>> {
         if self.original.is_empty() {
             self.original = try!(self.context.get_contents())
         }
 
-        // Set new clipboard contents
-        // self.context.set_contents(data)
-        Ok(())
+        self.context.set_contents(data)
     }
 
     pub fn reset() {
