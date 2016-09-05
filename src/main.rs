@@ -16,6 +16,10 @@ use std::io::{self, BufRead};
 use std::process::{self, Command};
 use std::time::Duration;
 
+mod clipboard_store;
+
+use clipboard_store::ClipboardStore;
+
 struct Point {
     x: usize,
     y: usize,
@@ -78,6 +82,17 @@ fn parse_options(filename: &str) -> Vec<String> {
     options
 }
 
+fn spawn_reset_clipboard() {
+    Command::new("passextract")
+        .arg("--reset-clipboard")
+        .spawn()
+        .expect("Failed to reset clipboard");
+}
+
+fn reset_clipboard() {
+    
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -103,6 +118,7 @@ fn main() {
     let mut selection = Point { x: 0, y: 2 };
 
     let mut clipboard_ctx = ClipboardContext::new().unwrap();
+    let mut clipboard_store = ClipboardStore::new().expect("Failed to initialize clipboard storage");
 
     loop {
         term.printline_with_cell(0, 0, "Passextract (Press q or Ctrl-C to quit)", knockout_cell);
@@ -117,6 +133,9 @@ fn main() {
         if let Some(Event::Key(ch)) = evt {
             match ch {
                 'q' | '\x03' => {
+                    // Reset clipboard
+                    reset_clipboard();
+
                     break;
                 }
                 'j' => {
@@ -138,6 +157,7 @@ fn main() {
                     move_selection(&mut term, &mut selection, knockout_cell, options.len() + 1)
                 }
                 '\x0D' => {
+                    clipboard_store.set_contents(strip_key(&options[selection.y - 2]).to_owned());
                     match clipboard_ctx.set_contents(strip_key(&options[selection.y - 2]).to_owned()) {
                         Ok(_) => {
                             term.printline_with_cell(selection.x, selection.y, "->", green_cell);
