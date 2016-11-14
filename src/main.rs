@@ -117,7 +117,11 @@ fn main() {
         if let Some(Event::Key(ch)) = evt {
             match ch {
                 'q' | '\x03' => {
-                    break;
+                    // Clear the clipboard on quit
+                    match clipboard_ctx.set_contents("".to_owned()) {
+                        Ok(_) => break,
+                        Err(_) => continue,
+                    }
                 }
                 'j' => {
                     if selection.y < options.len() + 1 {
