@@ -38,7 +38,7 @@ The included Bash completion file provides the same tab completion options as
 
 In the interactive UI, the following commands are available:
 
-	q or Ctrl-C: Quit
+	q or Ctrl-C: Quit and clear the clipboard
 	          j: Move the selection down
 	          k: Move the selection up
 	          g: Move the selection to the top
