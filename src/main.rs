@@ -78,6 +78,17 @@ fn parse_options(filename: &str) -> Vec<String> {
     options
 }
 
+/// Checks whether the given line starts with "p: "
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(is_password_line("p: secret"), true);
+/// ```
+fn is_password_line(line: &str) -> bool {
+    line.starts_with("p: ")
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -110,7 +121,11 @@ fn main() {
         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
 
         for (i, s) in options.iter().enumerate() {
-            term.printline(5, i + 2, s)
+            if is_password_line(s) {
+                term.printline(5, i + 2, "p: ")
+            } else {
+                term.printline(5, i + 2, s)
+            }
         }
 
         let evt = term.get_event(Duration::from_millis(100)).unwrap();
