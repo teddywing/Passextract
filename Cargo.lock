@@ -1,11 +1,3 @@
-[root]
-name = "passextract"
-version = "0.3.0"
-dependencies = [
- "clipboard 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustty 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
 [[package]]
 name = "block"
 version = "0.1.6"
@@ -89,6 +81,14 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "objc 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "passextract"
+version = "0.3.0"
+dependencies = [
+ "clipboard 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustty 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
