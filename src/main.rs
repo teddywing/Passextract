@@ -92,14 +92,15 @@ fn is_password_line(line: &str) -> bool {
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let hide_password = match args.first() {
+    let hide_password = match args.get(1) {
         Some(arg) if arg == "-i" => true,
         Some(_) => false,
         None => false,
     };
 
-    let input = if args.len() > 1 {
-        &args[1]
+    let input = if hide_password && args.len() > 2 ||
+            !hide_password && args.len() > 1 {
+        &args[args.len() - 1]
     } else {
         "-"
     };
@@ -127,7 +128,7 @@ fn main() {
         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
 
         for (i, s) in options.iter().enumerate() {
-            if is_password_line(s) {
+            if hide_password && is_password_line(s) {
                 term.printline(5, i + 2, "p: ")
             } else {
                 term.printline(5, i + 2, s)
