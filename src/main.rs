@@ -92,15 +92,18 @@ fn is_password_line(line: &str) -> bool {
 fn main() {
     let args: Vec<String> = env::args().collect();
 
+    let options = ["-i"];
+
     let hide_password = match args.get(1) {
         Some(arg) if arg == "-i" => true,
         Some(_) => false,
         None => false,
     };
 
-    let input = if hide_password && args.len() > 2 ||
-            !hide_password && args.len() > 1 {
-        &args[args.len() - 1]
+    let last_arg = &args[args.len() - 1];
+    let input = if args.len() > 1 &&
+            !options.contains(&last_arg.as_ref()) {
+        last_arg
     } else {
         "-"
     };
