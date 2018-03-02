@@ -1,0 +1,43 @@
+CHANGELOG
+=========
+
+v0.3.0 (2016-11-14):
+
+Additions:
+
+    * On quit, the clipboard is cleared by setting its contents to an empty
+      string. This is to help mitigate unintentional pastes of passwords or
+      clipboard exploits.
+
+v0.2.0 (2016-08-17):
+
+Additions:
+
+    * `g` mapping to move to the first selection
+    * `G` mapping to move to the last selection
+
+v0.1.1 (2016-08-06):
+
+Changes:
+
+    * Fix bug encountered when copying values/passwords containing the string
+      ": ". Previously, anything following the first occurrence of that string
+      would not be copied to the clipboard.
+
+v0.1.0 (2016-08-06):
+
+Additions:
+
+    * Passextract can now be invoked as a standalone program instead of
+      requiring input to be passed to it through STDIN. It will take a file
+      argument in exactly the same way as `pass show`. When run in this way, the
+      program will call `pass show` with the given argument and display the
+      result in the Passextract interactive interface. It is still possible to
+      use the program with STDIN.
+    * A Bash completion script is added that enables tab completion and
+      functions in the same way as `pass show`.
+    * A license, README, and demo screencast are added.
+
+v0.0.1 (2016-08-06):
+    * First working release. Reads from STDIN and presents lines beginning with
+      "e: ", "u: ", and "p: " in a menu for copying to the clipboard.
