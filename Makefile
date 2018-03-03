@@ -1,4 +1,6 @@
 TRANSFORMED_MAN_PAGE := doc/passextract.1.transformed
+VERSION := 0.3.0
+RELEASE_DIR := passextract-$(VERSION)
 
 $(TRANSFORMED_MAN_PAGE): doc/passextract.1.txt
 	sed 's/`/*/g' $< > $@
@@ -11,4 +13,15 @@ doc/passextract.1: $(TRANSFORMED_MAN_PAGE)
 
 doc: doc/passextract.1 clean_transformed
 
-.PHONY: clean_transformed doc
+release:
+	cargo build --release && \
+	mkdir -p $(RELEASE_DIR) && \
+	cp target/release/passextract \
+		passextract.bash-completion \
+		doc/passextract.1 \
+		$(RELEASE_DIR) && \
+	tar cjvf passextract-$(VERSION)_osx_amd64.tar.bz2 \
+		$(RELEASE_DIR) && \
+	rm -rf $(RELEASE_DIR)
+
+.PHONY: clean_transformed doc release
