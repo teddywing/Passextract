@@ -78,11 +78,46 @@ fn parse_options(filename: &str) -> Vec<String> {
     options
 }
 
+/// Checks whether the given line starts with "p: "
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(is_password_line("p: secret"), true);
+/// ```
+fn is_password_line(line: &str) -> bool {
+    line.starts_with("p: ")
+}
+
+/// Replaces the password on a password line with "*"s.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(hide_password_line("p: secret"), "p: ******);
+/// ```
+fn hide_password_line(line: &str) -> String {
+    const KEY_LENGTH: usize = 3;
+    let password_length = line.len() - KEY_LENGTH;
+
+    format!("p: {}", "*".repeat(password_length))
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let input = if args.len() > 1 {
-        &args[1]
+    let options = ["-i"];
+
+    let hide_password = match args.get(1) {
+        Some(arg) if arg == "-i" => true,
+        Some(_) => false,
+        None => false,
+    };
+
+    let last_arg = &args[args.len() - 1];
+    let input = if args.len() > 1 &&
+            !options.contains(&last_arg.as_ref()) {
+        last_arg
     } else {
         "-"
     };
@@ -110,7 +145,11 @@ fn main() {
         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
 
         for (i, s) in options.iter().enumerate() {
-            term.printline(5, i + 2, s)
+            if hide_password && is_password_line(s) {
+                term.printline(5, i + 2, &hide_password_line(s))
+            } else {
+                term.printline(5, i + 2, s)
+            }
         }
 
         let evt = term.get_event(Duration::from_millis(100)).unwrap();
