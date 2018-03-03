@@ -1,0 +1,68 @@
+passextract(1)
+==============
+
+NAME
+----
+passextract - Copy login details from pass(1)
+
+SYNOPSIS
+--------
+*passextract* ['OPTIONS'] ['PASS_FILE']
+
+DESCRIPTION
+-----------
+An extension to the pass(1) password manager. Passextract provides a UI
+similar to urlview(2) that enables these additional fields to be copied
+to the system clipboard. Three fields are recognised: emails, usernames,
+and passwords. They are defined as follows:
+
+	This text is ignored
+
+	e: email@example.com
+	u: username
+	p: secret-password
+
+In order to be recognised by Passextract, those fields must be prefixed
+by “e: ”, “u: ”, or “p: ” as illustrated above.
+
+The passextract(1) command will parse those fields from 'PASS_FILE'. If
+'PASS_FILE' is not provided or if it's '-' then the standard input is
+used.
+
+OPTIONS
+-------
+-i::
+	Make password strings invisible by replacing them with stars ("*").
+
+INTERACTIVE CONTROL
+-------------------
+In the interactive UI, the following commands are available:
+
+q / C-c::
+    Quit and clear the clipboard
+j::
+    Move the selection down
+k::
+    Move the selection up
+g::
+    Move the selection to the top
+G::
+    Move the selection to the bottom
+ENTER::
+    Copy the currently selected line
+
+EXAMPLES
+--------
+Passextract can be invoked on its own or with the piped output of `pass
+show`.
+
+	$ pass show github.com | passextract
+	$ passextract github.com
+
+The included Bash completion file provides the same tab completion
+options as `pass show`.
+
+SHELL COMPLETION
+----------------
+Shell completion is provided to complete pass(1) files. To enable Bash
+completion, source the included `passextract.bash-completion` file.

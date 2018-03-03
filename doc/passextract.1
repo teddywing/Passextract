@@ -1,0 +1,121 @@
+'\" t
+.\"     Title: passextract
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
+.\"      Date: 03/03/2018
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "PASSEXTRACT" "1" "03/03/2018" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+passextract \- Copy login details from pass(1)
+.SH "SYNOPSIS"
+.sp
+\fBpassextract\fR [\fIOPTIONS\fR] [\fIPASS_FILE\fR]
+.SH "DESCRIPTION"
+.sp
+An extension to the pass(1) password manager\&. Passextract provides a UI similar to urlview(2) that enables these additional fields to be copied to the system clipboard\&. Three fields are recognised: emails, usernames, and passwords\&. They are defined as follows:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+This text is ignored
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+e: email@example\&.com
+u: username
+p: secret\-password
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+In order to be recognised by Passextract, those fields must be prefixed by \(lqe: \(rq, \(lqu: \(rq, or \(lqp: \(rq as illustrated above\&.
+.sp
+The passextract(1) command will parse those fields from \fIPASS_FILE\fR\&. If \fIPASS_FILE\fR is not provided or if it\(cqs \fI\-\fR then the standard input is used\&.
+.SH "OPTIONS"
+.PP
+\-i
+.RS 4
+Make password strings invisible by replacing them with stars ("*")\&.
+.RE
+.SH "INTERACTIVE CONTROL"
+.sp
+In the interactive UI, the following commands are available:
+.PP
+q / C\-c
+.RS 4
+Quit and clear the clipboard
+.RE
+.PP
+j
+.RS 4
+Move the selection down
+.RE
+.PP
+k
+.RS 4
+Move the selection up
+.RE
+.PP
+g
+.RS 4
+Move the selection to the top
+.RE
+.PP
+G
+.RS 4
+Move the selection to the bottom
+.RE
+.PP
+ENTER
+.RS 4
+Copy the currently selected line
+.RE
+.SH "EXAMPLES"
+.sp
+Passextract can be invoked on its own or with the piped output of \fBpass show\fR\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+$ pass show github\&.com | passextract
+$ passextract github\&.com
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+The included Bash completion file provides the same tab completion options as \fBpass show\fR\&.
+.SH "SHELL COMPLETION"
+.sp
+Shell completion is provided to complete pass(1) files\&. To enable Bash completion, source the included \fBpassextract\&.bash\-completion\fR file\&.
