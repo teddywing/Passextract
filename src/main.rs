@@ -1,4 +1,4 @@
-// Copyright (c) 2016  Teddy Wing
+// Copyright (c) 2016, 2018  Teddy Wing
 //
 // This file is licensed under the GNU GPLv3+. Please see the COPYING
 // file for more information.
