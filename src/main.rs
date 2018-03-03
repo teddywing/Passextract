@@ -89,6 +89,20 @@ fn is_password_line(line: &str) -> bool {
     line.starts_with("p: ")
 }
 
+/// Replaces the password on a password line with "*"s.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(hide_password_line("p: secret"), "p: ******);
+/// ```
+fn hide_password_line(line: &str) -> String {
+    const KEY_LENGTH: usize = 3;
+    let password_length = line.len() - KEY_LENGTH;
+
+    format!("p: {}", "*".repeat(password_length))
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -132,7 +146,7 @@ fn main() {
 
         for (i, s) in options.iter().enumerate() {
             if hide_password && is_password_line(s) {
-                term.printline(5, i + 2, "p: ")
+                term.printline(5, i + 2, &hide_password_line(s))
             } else {
                 term.printline(5, i + 2, s)
             }
