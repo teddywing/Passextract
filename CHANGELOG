@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+v0.4.0 (2018-03-03):
+
+Additions:
+
+    * `-i` command line flag hides password strings with stars ('*').
+    * Changelog
+    * Man page
+
 v0.3.0 (2016-11-14):
 
 Additions:

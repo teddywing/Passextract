@@ -85,7 +85,7 @@ dependencies = [
 
 [[package]]
 name = "passextract"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "clipboard 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustty 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)",
