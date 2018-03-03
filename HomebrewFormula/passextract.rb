@@ -1,6 +1,7 @@
 class Passextract < Formula
   desc "An interface to easily copy login information from Pass"
   homepage "https://github.com/teddywing/Passextract"
+  version "0.4.0"
   url "https://github.com/teddywing/Passextract/releases/download/v0.4.0/passextract-0.4.0_osx_amd64.tar.bz2"
   sha256 "622439d19d2cedde4c6666d29cc9fad5487083da3e26660b66910e2f469eb54e"
 
