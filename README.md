@@ -47,9 +47,10 @@ In the interactive UI, the following commands are available:
 
 
 ## Install
-A binary built for Mac OS X is available on the [releases][3] page. Download the
-binary and put it in your `PATH`, then source the `passextract.bash-completion`
-file.
+On Mac OS X, Passextract can be installed from Homebrew:
+
+	$ brew tap teddywing/passextract https://github.com/teddywing/Passextract.git
+	$ brew install teddywing/passextract/passextract
 
 To compile from source or install on other platforms, you'll need the [Rust][4]
 compiler.
