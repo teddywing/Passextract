@@ -49,8 +49,7 @@ In the interactive UI, the following commands are available:
 ## Install
 On Mac OS X, Passextract can be installed from Homebrew:
 
-	$ brew tap teddywing/passextract https://github.com/teddywing/Passextract.git
-	$ brew install teddywing/passextract/passextract
+	$ brew install teddywing/formulae/passextract
 
 To compile from source or install on other platforms, you'll need the [Rust][4]
 compiler.
