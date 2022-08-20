@@ -4,6 +4,7 @@
 // file for more information.
 
 extern crate clipboard;
+extern crate exitcode;
 extern crate rustty;
 
 use clipboard::ClipboardContext;
@@ -114,7 +115,17 @@ fn main() {
     // TODO: Add --version -V arg
     // TODO: When done, update man page
 
-    let options = ["-i"];
+    let accepted_args = ["-i", "-V", "--version"];
+
+    match args.get(1) {
+        Some(arg) => {
+            if arg == "-V" || arg == "--version" {
+                println!("{}", env!("CARGO_PKG_VERSION"));
+                process::exit(exitcode::OK);
+            }
+        }
+        None => (),
+    }
 
     let hide_password = match args.get(1) {
         Some(arg) if arg == "-i" => true,
@@ -124,7 +135,7 @@ fn main() {
 
     let last_arg = &args[args.len() - 1];
     let input = if args.len() > 1 &&
-            !options.contains(&last_arg.as_ref()) {
+            !accepted_args.contains(&last_arg.as_ref()) {
         last_arg
     } else {
         "-"
