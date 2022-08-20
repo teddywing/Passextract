@@ -70,7 +70,7 @@ compiler.
 
 
 ## License
-Copyright © 2016, 2018 Teddy Wing. Licensed under the GNU GPLv3+ (see the
+Copyright © 2016, 2018, 2022 Teddy Wing. Licensed under the GNU GPLv3+ (see the
 included COPYING file).
 
 
