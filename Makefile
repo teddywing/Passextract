@@ -1,5 +1,5 @@
 TRANSFORMED_MAN_PAGE := doc/passextract.1.transformed
-VERSION := 0.4.0
+VERSION := 0.5.0
 RELEASE_DIR := passextract-$(VERSION)
 
 $(TRANSFORMED_MAN_PAGE): doc/passextract.1.txt
