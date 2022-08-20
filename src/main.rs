@@ -72,25 +72,11 @@ fn parse_options(filename: &str) -> Vec<String> {
 
         child.wait().expect("Error waiting for `pass`");
 
-        let stdout = child.stdout.take().unwrap();
-
-        // let file = stdout;
-        // let stdout = child.stdout.unwrap();
+        let stdout = child.stdout.expect("No standard output");
         let file = io::BufReader::new(stdout);
 
-        // let mut line = String::new();
-
-        // loop {
-        //     let n_bytes = file.read_line(&mut line).unwrap();
-        //     if n_bytes == 0 {
-        //         break;
-        //     }
-        //
-        //     push_option(&mut options, line.to_owned());
-        // }
-
         for line in file.lines() {
-            push_option(&mut options, line.unwrap());
+            push_option(&mut options, line.expect("Error reading line"));
         }
     }
 
