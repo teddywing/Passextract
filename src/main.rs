@@ -130,9 +130,9 @@ fn main() {
         "-"
     };
 
-    let options = parse_options(input);
+    let copy_options = parse_options(input);
 
-    if options.is_empty() {
+    if copy_options.is_empty() {
         // TODO: 66 noinput
         process::exit(1);
     }
@@ -153,7 +153,7 @@ fn main() {
 
         term.printline_with_cell(selection.x, selection.y, "->", knockout_cell);
 
-        for (i, s) in options.iter().enumerate() {
+        for (i, s) in copy_options.iter().enumerate() {
             if hide_password && is_password_line(s) {
                 term.printline(5, i + 2, &hide_password_line(s))
             } else {
@@ -172,7 +172,7 @@ fn main() {
                     }
                 }
                 'j' => {
-                    if selection.y < options.len() + 1 {
+                    if selection.y < copy_options.len() + 1 {
                         let y = selection.y;
                         move_selection(&mut term, &mut selection, knockout_cell, y + 1)
                     }
@@ -187,10 +187,10 @@ fn main() {
                     move_selection(&mut term, &mut selection, knockout_cell, 2)
                 }
                 'G' => {
-                    move_selection(&mut term, &mut selection, knockout_cell, options.len() + 1)
+                    move_selection(&mut term, &mut selection, knockout_cell, copy_options.len() + 1)
                 }
                 '\x0D' => {
-                    match clipboard_ctx.set_contents(strip_key(&options[selection.y - 2]).to_owned()) {
+                    match clipboard_ctx.set_contents(strip_key(&copy_options[selection.y - 2]).to_owned()) {
                         Ok(_) => {
                             term.printline_with_cell(selection.x, selection.y, "->", green_cell);
                         },
