@@ -63,15 +63,20 @@ fn parse_options(filename: &str) -> Vec<String> {
             push_option(&mut options, line.to_owned());
         }
     } else {
-        let file = Command::new("pass")
+        let mut child = Command::new("pass")
             .arg("show")
             .arg(filename)
-            .output()
-            .expect("Error executing `pass`")
-            .stdout;
+            .stdout(std::process::Stdio::piped())
+            .spawn()
+            .expect("Error executing `pass`");
 
-        for line in String::from_utf8_lossy(&file).lines() {
-            push_option(&mut options, line.to_owned());
+        child.wait().expect("Error waiting for `pass`");
+
+        let stdout = child.stdout.expect("No standard output");
+        let file = io::BufReader::new(stdout);
+
+        for line in file.lines() {
+            push_option(&mut options, line.expect("Error reading line"));
         }
     }
 
