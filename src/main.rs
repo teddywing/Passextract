@@ -111,6 +111,9 @@ fn hide_password_line(line: &str) -> String {
 fn main() {
     let args: Vec<String> = env::args().collect();
 
+    // TODO: Add --version -V arg
+    // TODO: When done, update man page
+
     let options = ["-i"];
 
     let hide_password = match args.get(1) {
