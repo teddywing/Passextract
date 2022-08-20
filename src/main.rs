@@ -141,8 +141,7 @@ fn main() {
     let copy_options = parse_options(input);
 
     if copy_options.is_empty() {
-        // TODO: 66 noinput
-        process::exit(1);
+        process::exit(exitcode::NOINPUT);
     }
 
     let mut term = Terminal::new().unwrap();
