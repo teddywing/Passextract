@@ -133,6 +133,7 @@ fn main() {
     let options = parse_options(input);
 
     if options.is_empty() {
+        // TODO: 66 noinput
         process::exit(1);
     }
 
