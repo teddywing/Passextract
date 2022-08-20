@@ -34,6 +34,9 @@ OPTIONS
 -i::
 	Make password strings invisible by replacing them with stars ("*").
 
+-V, --version::
+	Print the program version.
+
 INTERACTIVE CONTROL
 -------------------
 In the interactive UI, the following commands are available:
